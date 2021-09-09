@@ -1,8 +1,14 @@
+
 const searchSong = async () => {
-  const searchText = document.getElementById("searchText").value;
-  const res = await fetch(`https://api.lyrics.ovh/suggest/${searchText}`);
-  const data = await res.json();
-  displaySongs(data.data);
+  try{
+    const searchText = document.getElementById("searchText").value;
+    const res = await fetch(`https://api.lyrics.ovh/suggest/${searchText}`);
+    const data = await res.json();
+    displaySongs(data.data);
+  }
+  catch(error){
+    displayError('Sorry something went wrong!! please try again late')
+  }
 };
 
 // display songs
@@ -28,9 +34,13 @@ const displaySongs = (songs) => {
 // get lyric
 
 const getLyric = async (title, artist) => {
-    const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
-    const data = await res.json()
+  try {
+    const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`);
+    const data = await res.json();
     displayLyrics(data.lyrics);
+  } catch (error) {
+    displayError('Sorry something went wrong!! please try again late')
+  }
 };
 // or
 // const getLyric = async (title, artist) => {
@@ -41,9 +51,16 @@ const getLyric = async (title, artist) => {
 //     });
 // };
 
-
 // display lyrics
 const displayLyrics = (lyrics) => {
   const lyricsContainer = document.getElementById("lyricsContainer");
   lyricsContainer.innerText = lyrics;
 };
+
+// display error function
+
+const displayError = error => {
+  const errorMessage = document.getElementById('errorMessage')
+  errorMessage.innerText = error
+
+}
